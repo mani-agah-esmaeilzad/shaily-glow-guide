@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { AIChat } from '@/components/ai-chat';
 
 interface UserProfile {
   name: string;
@@ -212,24 +213,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ profile }) => {
         </div>
       </div>
 
-      {/* AI Chat Modal - Placeholder for future implementation */}
-      {showAIChat && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md">
-            <CardHeader>
-              <CardTitle>مشاوره با شایلی</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                این بخش به زودی آماده می‌شود! اینجا می‌تونی با هوش مصنوعی شایلی درباره پوست و موت صحبت کنی.
-              </p>
-              <Button onClick={() => setShowAIChat(false)} className="w-full">
-                بستن
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      {/* AI Chat Component */}
+      <AIChat 
+        isOpen={showAIChat} 
+        onClose={() => setShowAIChat(false)} 
+      />
     </div>
   );
 };
