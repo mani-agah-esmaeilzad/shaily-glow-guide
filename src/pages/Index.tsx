@@ -1,14 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React, { useState } from 'react';
+import { HeroSection } from '@/components/hero-section';
+import { OnboardingFlow } from '@/components/onboarding/onboarding-flow';
+import { Dashboard } from '@/pages/dashboard';
+
+interface UserProfile {
+  name: string;
+  age: string;
+  job: string;
+  skinType: string;
+  skinConcerns: string[];
+  hairType: string;
+  hairConcerns: string[];
+  currentSkinRoutine: string;
+  currentHairRoutine: string;
+}
+
+type AppState = 'landing' | 'onboarding' | 'dashboard';
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [appState, setAppState] = useState<AppState>('landing');
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
+  const handleGetStarted = () => {
+    setAppState('onboarding');
+  };
+
+  const handleOnboardingComplete = (profile: UserProfile) => {
+    setUserProfile(profile);
+    setAppState('dashboard');
+  };
+
+  if (appState === 'onboarding') {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+  }
+
+  if (appState === 'dashboard' && userProfile) {
+    return <Dashboard profile={userProfile} />;
+  }
+
+  return <HeroSection onGetStarted={handleGetStarted} />;
 };
 
 export default Index;
