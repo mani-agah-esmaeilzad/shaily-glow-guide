@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ProgressSteps } from '@/components/ui/progress-steps';
 import { BasicInfoStep } from './basic-info-step';
+import { GenderStep } from './gender-step';
 import { SkinTypeStep } from './skin-type-step';
 import { HairTypeStep } from './hair-type-step';
 import { CurrentRoutineStep } from './current-routine-step';
@@ -10,6 +11,7 @@ interface OnboardingData {
   name: string;
   age: string;
   job: string;
+  gender: string;
   skinType: string;
   skinConcerns: string[];
   hairType: string;
@@ -28,6 +30,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) =>
     name: '',
     age: '',
     job: '',
+    gender: '',
     skinType: '',
     skinConcerns: [],
     hairType: '',
@@ -36,7 +39,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) =>
     currentHairRoutine: ''
   });
 
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   const updateData = (newData: Partial<OnboardingData>) => {
     setData(prev => ({ ...prev, ...newData }));
@@ -61,12 +64,14 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) =>
       case 1:
         return <BasicInfoStep data={data} updateData={updateData} onNext={nextStep} />;
       case 2:
-        return <SkinTypeStep data={data} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
+        return <GenderStep data={data} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
       case 3:
-        return <HairTypeStep data={data} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
+        return <SkinTypeStep data={data} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
       case 4:
-        return <CurrentRoutineStep data={data} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
+        return <HairTypeStep data={data} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
       case 5:
+        return <CurrentRoutineStep data={data} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
+      case 6:
         return <ReviewStep data={data} onNext={nextStep} onPrev={prevStep} />;
       default:
         return null;

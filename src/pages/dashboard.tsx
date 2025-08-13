@@ -5,11 +5,14 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { AIChat } from '@/components/ai-chat';
+import { AvatarDisplay } from '@/components/ui/avatar-display';
+import { AddRoutineItem } from '@/components/add-routine-item';
 
 interface UserProfile {
   name: string;
   age: string;
   job: string;
+  gender: string;
   skinType: string;
   skinConcerns: string[];
   hairType: string;
@@ -45,6 +48,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ profile }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [showAIChat, setShowAIChat] = useState(false);
 
+  const addCustomTask = (newTask: Omit<Task, 'id' | 'completed'>) => {
+    const task: Task = {
+      id: Date.now().toString(),
+      completed: false,
+      ...newTask,
+    };
+    setTasks(prev => [...prev, task]);
+  };
+
   const toggleTask = (taskId: string) => {
     setTasks(prev =>
       prev.map(task =>
@@ -65,9 +77,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ profile }) => {
       <header className="gradient-hero text-white py-8">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">سلام {profile.name}! 👋</h1>
-              <p className="text-xl opacity-90 mt-2">آماده‌ای برای مراقبت از خودت؟</p>
+            <div className="flex items-center gap-4">
+              <AvatarDisplay 
+                gender={profile.gender} 
+                name={profile.name} 
+                size="lg" 
+              />
+              <div>
+                <h1 className="text-3xl font-bold">سلام {profile.name}! 👋</h1>
+                <p className="text-xl opacity-90 mt-2">آماده‌ای برای مراقبت از خودت؟</p>
+              </div>
             </div>
             <Button
               onClick={() => setShowAIChat(true)}
@@ -95,7 +114,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ profile }) => {
           <div className="lg:col-span-1">
             <Card className="gradient-card shadow-card">
               <CardHeader>
-                <CardTitle>پروفایل شما</CardTitle>
+                <div className="flex items-center gap-3">
+                  <AvatarDisplay 
+                    gender={profile.gender} 
+                    name={profile.name} 
+                    size="md" 
+                  />
+                  <CardTitle>پروفایل شما</CardTitle>
+                </div>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -129,6 +155,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ profile }) => {
                 <CardTitle>روتین روزانه</CardTitle>
               </CardHeader>
               <CardContent>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold">روتین روزانه</h3>
+                  <AddRoutineItem onAdd={addCustomTask} />
+                </div>
                 <Tabs defaultValue="morning" className="w-full">
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="morning">صبح</TabsTrigger>

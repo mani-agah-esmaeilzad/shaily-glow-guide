@@ -7,6 +7,7 @@ interface UserProfile {
   name: string;
   age: string;
   job: string;
+  gender: string;
   skinType: string;
   skinConcerns: string[];
   hairType: string;
